@@ -1,6 +1,10 @@
-[] file traversal
-[] hasher for each paths
-[] merkel tree out of that hash and also diff 
-[] chunker and embedder 
-[] reranker 
-[] pipeline for retriveal
+# CodeIndex
+
+## Roadmap
+
+- [ ] File traversal
+- [ ] Hasher for each path
+- [ ] Merkle tree from hashes, with diff support
+- [ ] Chunker and embedder
+- [ ] Reranker
+- [ ] Retrieval pipeline
