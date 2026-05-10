@@ -6,7 +6,7 @@
 - [x] Hasher for each path
 - [x] Merkle tree from hashes, with diff support
 - [x] Add merkle tree viz 
-- [ ] AST Chunker 
+- [x] AST Chunker 
 - [ ] Embedder
 - [ ] Reranker
 - [ ] Retrieval pipeline
