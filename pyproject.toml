@@ -7,7 +7,9 @@ authors = [
     { name = "Krish-Parekh", email = "krishparekh303@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "blake3>=1.0.8",
+]
 
 [project.scripts]
 codeindex = "codeindex:main"
