@@ -4,7 +4,8 @@
 
 - [x] File traversal
 - [x] Hasher for each path
-- [ ] Merkle tree from hashes, with diff support
+- [x] Merkle tree from hashes, with diff support
+- [ ] Add merkle tree viz 
 - [ ] Chunker and embedder
 - [ ] Reranker
 - [ ] Retrieval pipeline
