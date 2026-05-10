@@ -75,3 +75,4 @@ chroma/
 
 *.ipynb
 examples/
+.qdrant_data/
