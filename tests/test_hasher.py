@@ -130,13 +130,13 @@ def test_hash_files_empty_input():
 
 
 def test_walker_and_hasher_compose(tmp_path: Path):
-    (tmp_path / "a.txt").write_bytes(b"AAA")
+    (tmp_path / "a.py").write_bytes(b"AAA")
     (tmp_path / "sub").mkdir()
-    (tmp_path / "sub" / "b.txt").write_bytes(b"BBB")
+    (tmp_path / "sub" / "b.py").write_bytes(b"BBB")
 
     result = {fh.relative: fh.sha256 for fh in hash_files(walk(tmp_path))}
 
     assert result == {
-        Path("a.txt"): hashlib.sha256(b"AAA").hexdigest(),
-        Path("sub/b.txt"): hashlib.sha256(b"BBB").hexdigest(),
+        Path("a.py"): hashlib.sha256(b"AAA").hexdigest(),
+        Path("sub/b.py"): hashlib.sha256(b"BBB").hexdigest(),
     }
