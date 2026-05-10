@@ -73,6 +73,5 @@ vector_store/
 chroma/
 .chroma/
 
-*.ipynb
 examples/
 .qdrant_data/

@@ -7,6 +7,6 @@
 - [x] Merkle tree from hashes, with diff support
 - [x] Add merkle tree viz 
 - [x] AST Chunker 
-- [ ] Embedder
+- [x] Embedder
 - [ ] Reranker
 - [ ] Retrieval pipeline

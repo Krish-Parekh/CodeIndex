@@ -57,6 +57,16 @@ def diff(old: MerkleNode | None, new: MerkleNode | None) -> Changes:
 
 
 def _diff(prefix: Path, old: MerkleNode | None, new: MerkleNode | None, out: Changes) -> None:
+    """
+    This function is used to diff two Merkle trees.
+    It is a recursive function that traverses the two trees and compares the nodes.
+    If the nodes are different, it adds the file to the changes.
+    If the nodes are the same, it does nothing.
+    If the nodes are directories, it recurses on the children.
+    If the nodes are files, it adds the file to the changes.
+    If the nodes are directories, it adds the directory to the changes.
+    If the nodes are files, it adds the file to the changes.
+    """
     # CHECK 1: If the trees are identical, we don't need to do anything.
     if old is not None and new is not None and old.sha256 == new.sha256:
         return
