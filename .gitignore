@@ -74,3 +74,4 @@ chroma/
 .chroma/
 
 *.ipynb
+examples/
