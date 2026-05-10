@@ -72,3 +72,5 @@ embeddings/
 vector_store/
 chroma/
 .chroma/
+
+*.ipynb

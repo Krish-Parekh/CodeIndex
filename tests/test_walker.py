@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from codeindex.walker import walk
+from codeindex.walker import WalkedFile, walk
 
 
 def test_walk_flat_directory(tmp_path: Path):
@@ -13,7 +13,7 @@ def test_walk_flat_directory(tmp_path: Path):
     (tmp_path / "a.txt").write_text("")
     (tmp_path / "c.txt").write_text("")
 
-    result = list(walk(tmp_path))
+    result = [w.absolute for w in walk(tmp_path)]
 
     assert result == [
         tmp_path / "a.txt",
@@ -28,7 +28,7 @@ def test_walk_recurses_into_subdirs(tmp_path: Path):
     sub.mkdir()
     (sub / "deep.txt").write_text("")
 
-    result = set(walk(tmp_path))
+    result = {w.absolute for w in walk(tmp_path)}
 
     assert result == {
         tmp_path / "sub" / "deep.txt",
@@ -41,7 +41,7 @@ def test_walk_deeply_nested(tmp_path: Path):
     deep.mkdir(parents=True)
     (deep / "buried.txt").write_text("")
 
-    result = list(walk(tmp_path))
+    result = [w.absolute for w in walk(tmp_path)]
 
     assert result == [tmp_path / "a" / "b" / "c" / "buried.txt"]
 
@@ -62,15 +62,15 @@ def test_walk_yields_only_files(tmp_path: Path):
     (tmp_path / "sub").mkdir()
     (tmp_path / "sub" / "b.txt").write_text("")
 
-    for p in walk(tmp_path):
-        assert p.is_file(), f"{p} is not a file"
+    for w in walk(tmp_path):
+        assert w.absolute.is_file()
 
 
 def test_walk_results_are_sorted_within_directory(tmp_path: Path):
     for name in ["zebra.txt", "apple.txt", "mango.txt"]:
         (tmp_path / name).write_text("")
 
-    result = list(walk(tmp_path))
+    result = [w.absolute for w in walk(tmp_path)]
 
     assert result == [
         tmp_path / "apple.txt",
@@ -100,7 +100,7 @@ def test_walk_resolves_relative_paths(tmp_path: Path, monkeypatch: pytest.Monkey
     (tmp_path / "x.txt").write_text("")
     monkeypatch.chdir(tmp_path)
 
-    result = list(walk(Path(".")))
+    result = [w.absolute for w in walk(Path("."))]
 
     assert result == [tmp_path / "x.txt"]
 
@@ -109,15 +109,32 @@ def test_walk_returns_absolute_paths(tmp_path: Path, monkeypatch: pytest.MonkeyP
     (tmp_path / "x.txt").write_text("")
     monkeypatch.chdir(tmp_path)
 
-    for p in walk(Path(".")):
-        assert p.is_absolute()
+    for w in walk(Path(".")):
+        assert w.absolute.is_absolute()
+
+
+def test_walk_relative_paths_are_relative_to_root(tmp_path: Path):
+    (tmp_path / "top.txt").write_text("")
+    (tmp_path / "sub").mkdir()
+    (tmp_path / "sub" / "deep.txt").write_text("")
+
+    result = sorted(w.relative for w in walk(tmp_path))
+
+    assert result == [Path("sub/deep.txt"), Path("top.txt")]
+
+
+def test_walk_yields_walked_file_instances(tmp_path: Path):
+    (tmp_path / "a.txt").write_text("")
+
+    for w in walk(tmp_path):
+        assert isinstance(w, WalkedFile)
 
 
 def test_walk_includes_hidden_files(tmp_path: Path):
     (tmp_path / ".hidden").write_text("")
     (tmp_path / "visible.txt").write_text("")
 
-    result = set(walk(tmp_path))
+    result = {w.absolute for w in walk(tmp_path)}
 
     assert result == {tmp_path / ".hidden", tmp_path / "visible.txt"}
 
@@ -131,7 +148,7 @@ def test_walk_mixed_tree(tmp_path: Path):
     (tmp_path / "b" / "nested").mkdir()
     (tmp_path / "b" / "nested" / "deep.txt").write_text("")
 
-    result = set(walk(tmp_path))
+    result = {w.absolute for w in walk(tmp_path)}
 
     assert result == {
         tmp_path / "root.txt",
