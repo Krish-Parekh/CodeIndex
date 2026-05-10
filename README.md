@@ -15,3 +15,4 @@
 - [ ] Add support for more language
 - [ ] Push chunks to Qdrant, Mem0, Supermemory 
 - [ ] Run SWEBench Eval
+- [ ] Implement server side merkle tree sync 
